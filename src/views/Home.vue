@@ -12,7 +12,6 @@
       >
     </div>
 
-    
     <div
       v-else
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
@@ -23,7 +22,6 @@
         v-for="(workout, index) in data"
         :key="index"
       >
-        
         <img
           v-if="workout.workoutType === 'cardio'"
           src="@/assets/images/running-light-green.png"
@@ -56,10 +54,15 @@
       </router-link>
     </div>
   </div>
+  <div  v-else class="container mt-10 px-4">
+    <div  class="w-full flex flex-col items-center">
+    <h1 class="text-2xl ">Please Login to view your activity...</h1>
+     </div>
+  </div>
 </template>
 
 <script>
-import { ref , computed } from "vue";
+import { ref, computed } from "vue";
 import store from "../store/index";
 import { supabase } from "../supabase/init";
 export default {
@@ -71,7 +74,9 @@ export default {
     const user = computed(() => store.state.user);
     const getData = async () => {
       try {
-        const { data: workouts, error } = await supabase.from("workouts").select("*");
+        const { data: workouts, error } = await supabase
+          .from("workouts")
+          .select("*");
         if (error) throw error;
         data.value = workouts;
         dataLoaded.value = true;
@@ -80,7 +85,7 @@ export default {
       }
     };
     getData();
-    return { data, dataLoaded ,user};
+    return { data, dataLoaded, user };
   },
 };
 </script>
